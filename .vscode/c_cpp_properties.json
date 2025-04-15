@@ -1,0 +1,31 @@
+{
+    "configurations": [
+        {
+            "name": "STM32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/stm32_project/Core/include",
+                "${workspaceFolder}/stm32_project/Library",
+                "${workspaceFolder}/stm32_project/Drivers/Peripherals/USART",
+                "${workspaceFolder}/stm32_project/Drivers/Peripherals/OLED",
+                "${workspaceFolder}/stm32_project/Drivers/BSP",
+                "${workspaceFolder}/stm32_project/System",
+                "${workspaceFolder}/stm32_project/Inc",
+                "D:/Program Files/Tool/Professional_software/IC/Keil5_stm32/ARM/ARMCC/include"
+            ],
+            "defines": [
+                "USE_STDPERIPH_DRIVER",
+                "STM32F10X_MD"
+            ],
+            "compilerPath": "D:/Program Files/Tool/Professional_software/IC/Keil5_stm32/ARM/ARMCC/bin/armcc.exe",
+            "intelliSenseMode": "gcc-x64",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/stm32_project"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ],
+    "version": 4
+}

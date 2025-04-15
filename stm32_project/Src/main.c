@@ -1,4 +1,6 @@
 #include "stm32f10x.h" // Device header
+#include <stdint.h>
+#include "stm32f10x_tim.h"
 #include "Delay.h"
 #include "OLED.h"
 #include "Serial.h"

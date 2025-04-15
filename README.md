@@ -1,3 +1,60 @@
+# OpenCV与STM32物体检测系统
+
+## 项目结构
+```
+.
+├── stm32_project/           # STM32项目目录
+│   ├── Inc/                # 头文件目录
+│   │   ├── protocol.h     # 协议定义
+│   │   └── ...
+│   ├── Src/               # 源文件目录
+│   │   ├── protocol.c     # 协议实现
+│   │   └── ...
+│   └── ...
+├── python/                 # Python项目目录
+│   ├── main.py           # 主程序
+│   ├── camera.py         # 摄像头控制
+│   └── ...
+└── README.md              # 项目说明文档
+```
+
+## 功能说明
+1. 使用OpenCV进行实时物体检测
+2. 通过串口与STM32通信
+3. 根据检测结果控制LED指示灯
+
+## 通信协议
+- 命令格式：单字符命令
+  - 'A': 检测到物体A
+  - 'B': 检测到物体B
+  - 'N': 未检测到物体
+- 响应格式：
+  - "ACK_A\r\n": 确认收到A命令
+  - "ACK_B\r\n": 确认收到B命令
+  - "ACK_N\r\n": 确认收到N命令
+  - "ERR\r\n": 错误响应
+
+## 使用说明
+1. STM32端：
+   - 编译并下载程序到STM32开发板
+   - 确保LED1和LED2正确连接
+   - 通过UART1与Python程序通信
+
+2. Python端：
+   - 安装依赖：`pip install -r requirements.txt`
+   - 运行程序：`python main.py`
+   - 按'q'键退出程序
+
+## 开发环境
+- STM32CubeIDE
+- Python 3.8+
+- OpenCV 4.5+
+- VSCode
+
+## 注意事项
+1. 确保摄像头正确连接
+2. 检查串口连接是否正确
+3. 确保LED引脚配置正确
 
 # YOLO物体检测应用
 

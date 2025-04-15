@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 import os
 import time
-import serial
 import argparse
+from protocol import CommunicationProtocol
 
 def parse_arguments():
     """解析命令行参数"""
@@ -14,7 +14,7 @@ def parse_arguments():
     parser.add_argument('--camera', type=int, default=0, help='摄像头索引')
     parser.add_argument('--confidence', type=float, default=0.5, help='置信度阈值')
     parser.add_argument('--port', default='COM3', help='串口端口')
-    parser.add_argument('--baud', type=int, default=9600, help='波特率')
+    parser.add_argument('--baud', type=int, default=115200, help='波特率')
     parser.add_argument('--objectA', default='person', help='要检测的物体A')
     parser.add_argument('--objectB', default='car', help='要检测的物体B')
     return parser.parse_args()
@@ -57,20 +57,6 @@ def initialize_camera(camera_index):
         return cap
     except Exception as e:
         print(f"错误: 初始化摄像头时出错: {e}")
-        return None
-
-def initialize_serial(port, baud_rate):
-    """初始化串口通信"""
-    try:
-        ser = serial.Serial(port, baud_rate, timeout=1)
-        if ser.isOpen():
-            print(f"串口 {port} 已打开，波特率: {baud_rate}")
-            return ser
-        else:
-            print(f"错误: 无法打开串口 {port}")
-            return None
-    except Exception as e:
-        print(f"错误: 初始化串口时出错: {e}")
         return None
 
 def process_frame(frame, net, output_layers, classes, confidence_threshold):
@@ -151,9 +137,9 @@ def main():
     if cap is None:
         return
     
-    # 初始化串口
-    ser = initialize_serial(args.port, args.baud)
-    if ser is None:
+    # 初始化通信协议
+    protocol = CommunicationProtocol(port=args.port, baudrate=args.baud)
+    if not protocol.connect():
         cap.release()
         return
     
@@ -192,12 +178,11 @@ def main():
             
             # 只有当检测状态变化时才发送
             if to_send != last_sent:
-                try:
-                    ser.write(to_send.encode())
+                if protocol.send_object_detected(to_send):
                     last_sent = to_send
                     print(f"已发送: {to_send}")
-                except Exception as e:
-                    print(f"错误: 发送串口数据时出错: {e}")
+                else:
+                    print(f"发送失败: {to_send}")
             
             # 在帧上显示当前状态
             status_text = f"已检测到: {', '.join(detected_objects)}" if detected_objects else "未检测到目标物体"
@@ -217,9 +202,7 @@ def main():
         print("程序被用户中断")
     finally:
         # 释放资源
-        if ser and ser.isOpen():
-            ser.close()
-            print("串口已关闭")
+        protocol.disconnect()
         cap.release()
         cv2.destroyAllWindows()
         print("程序已退出")
