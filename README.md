@@ -1,3 +1,4 @@
+
 # YOLO物体检测应用
 
 这是一个基于YOLOv4-tiny的实时物体检测应用程序，使用OpenCV和Python实现。该应用程序可以通过摄像头实时检测物体，并可以保存检测结果。
@@ -83,3 +84,6 @@ python object_detection.py --config yolov4-tiny.cfg --weights yolov4-tiny.weight
 ## 许可证
 
 MIT 
+
+# openCVandSTM32
+
